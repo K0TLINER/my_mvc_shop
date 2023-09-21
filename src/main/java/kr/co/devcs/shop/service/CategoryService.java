@@ -12,5 +12,5 @@ public interface CategoryService {
     void addCategory(CategoryForm categoryForm);
     Optional<Category> getCategory(long categoryId);
     List<Category> getCategoryListByParentCategoryId();
-    List<Category> getCategoryListByParentCategoryId(long parentCategoryId);
+    List<Category> getCategoryListByParentCategoryId(Long parentCategoryId);
 }
