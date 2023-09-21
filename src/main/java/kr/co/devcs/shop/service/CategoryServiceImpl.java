@@ -3,15 +3,16 @@ package kr.co.devcs.shop.service;
 import kr.co.devcs.shop.dto.CategoryForm;
 import kr.co.devcs.shop.entity.Category;
 import kr.co.devcs.shop.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService{
-    @Autowired private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
     @Override
     public void addCategory(CategoryForm categoryForm) {
         Category category = Category.builder()

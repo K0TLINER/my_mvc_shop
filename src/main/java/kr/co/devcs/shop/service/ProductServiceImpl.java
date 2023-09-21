@@ -5,6 +5,7 @@ import kr.co.devcs.shop.dto.SearchForm;
 import kr.co.devcs.shop.entity.Category;
 import kr.co.devcs.shop.entity.Product;
 import kr.co.devcs.shop.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private CategoryService categoryService;
+    private final ProductRepository productRepository;
+    private final CategoryService categoryService;
     @Override
     public void addProduct(ProductForm productForm) {
         Product product = Product.builder()
