@@ -5,13 +5,8 @@ import kr.co.devcs.shop.entity.Category;
 import kr.co.devcs.shop.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.security.InvalidParameterException;
 
 @RestController
 @RequestMapping("/admin/category")
@@ -20,11 +15,8 @@ public class AdminCategoryController {
     private final CategoryService categoryService;
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<?> addCategory(
-            @RequestBody @Validated CategoryForm categoryForm,
-            BindingResult bindingResult
+            @Validated @RequestBody CategoryForm categoryForm
             ) {
-        System.out.println(bindingResult.hasErrors());
-        if(bindingResult.hasErrors()) throw new InvalidParameterException(bindingResult.getFieldError().getField());
         categoryService.addCategory(categoryForm);
 
         return ResponseEntity.ok().build();
