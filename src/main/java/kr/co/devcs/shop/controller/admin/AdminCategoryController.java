@@ -39,4 +39,18 @@ public class AdminCategoryController {
         List<Category> categories = categoryService.getCategoryListByParentCategoryId(parentCategoryId);
         return ResponseEntity.ok().body(categories);
     }
+    @RequestMapping(value = "/update", method = RequestMethod.PATCH)
+    public ResponseEntity<?> updateCategory(
+            @Validated @RequestBody CategoryForm categoryForm
+    ) {
+        categoryService.updateCategory(categoryForm);
+        return ResponseEntity.ok().build();
+    }
+    @RequestMapping(value = "/delete/{categoryId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteCategory(
+            @PathVariable("categoryId") long categoryId
+    ) {
+        categoryService.deleteCategory(categoryId);
+        return ResponseEntity.ok().build();
+    }
 }

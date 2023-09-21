@@ -13,4 +13,7 @@ public interface CategoryService {
     Optional<Category> getCategory(long categoryId);
     List<Category> getCategoryListByParentCategoryId();
     List<Category> getCategoryListByParentCategoryId(Long parentCategoryId);
+    void updateCategory(CategoryForm categoryForm);
+    void deleteCategory(long categoryId);
+    boolean existsByCategoryId(long categoryId);
 }

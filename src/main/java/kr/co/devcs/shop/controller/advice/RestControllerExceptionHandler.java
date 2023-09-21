@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 @RestControllerAdvice
@@ -37,7 +38,14 @@ public class RestControllerExceptionHandler {
         final ErrorResponse response = new ErrorResponse(errorCode.getDescription(), errorCode.getStatus(), errors);
         return ResponseEntity.badRequest().body(response);
     }
-
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ErrorResponse> noSuchElementExceptionHandler(NoSuchElementException exception) {
+        ErrorCode errorCode = ErrorCode.NO_RETURN_DB_ERROR;
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", "비정상적인 접근입니다.");
+        final ErrorResponse response = new ErrorResponse(errorCode.getDescription(), errorCode.getStatus(), errors);
+        return ResponseEntity.badRequest().body(response);
+    }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception ex) {
         System.out.println(ex.getClass());

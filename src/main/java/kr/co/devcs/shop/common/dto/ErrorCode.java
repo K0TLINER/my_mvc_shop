@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum ErrorCode {
     INVALID_INPUT_VALUE(400, "COMMON-001", "Bad Request"),
     INTERNAL_SERVER_ERROR(500, "COMMON-002", "Internal Server Error"),
+    NO_RETURN_DB_ERROR(500, "COMMON-003", "Internal Server Error"),
 
     DUPLICATE_LOGIN_ID(400, "ACCOUNT-001", "계정명이 중복된 경우"),
     UNAUTHORIZED(401, "ACCOUNT-002", "인증에 실패한 경우"),

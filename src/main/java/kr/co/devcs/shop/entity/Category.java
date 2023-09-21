@@ -1,6 +1,9 @@
 package kr.co.devcs.shop.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 @Entity(name = "categories")
@@ -16,7 +19,8 @@ public class Category {
     private Long categoryId;
     @Column(name = "category_name", nullable = false, length = 300)
     private String categoryName;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_category_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Category parentCategory;
 }

@@ -37,4 +37,22 @@ public class CategoryServiceImpl implements CategoryService{
             return categoryRepository.findAllByParentCategoryCategoryId(parentCategoryId);
         return this.getCategoryListByParentCategoryId();
     }
+
+    @Override
+    public void updateCategory(CategoryForm categoryForm) {
+        Category category = Category.builder()
+                .categoryName(categoryForm.getCategoryName()).build();
+        categoryRepository.save(category);
+    }
+
+    @Override
+    public void deleteCategory(long categoryId) {
+        Category category = this.getCategory(categoryId).orElseThrow();
+        categoryRepository.delete(category);
+    }
+
+    @Override
+    public boolean existsByCategoryId(long categoryId) {
+        return categoryRepository.existsById(categoryId);
+    }
 }

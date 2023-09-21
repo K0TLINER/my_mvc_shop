@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findAllByParentCategoryCategoryId(Long parentCategoryId);
+    @Override
+    boolean existsById(Long categoryId);
 }
