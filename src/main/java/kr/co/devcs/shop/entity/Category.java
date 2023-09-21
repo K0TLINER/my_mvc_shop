@@ -1,5 +1,6 @@
 package kr.co.devcs.shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
@@ -19,8 +20,10 @@ public class Category {
     private Long categoryId;
     @Column(name = "category_name", nullable = false, length = 300)
     private String categoryName;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+            (fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_category_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Category parentCategory;
 }
