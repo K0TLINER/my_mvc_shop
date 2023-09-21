@@ -1,12 +1,17 @@
 package kr.co.devcs.shop.controller.advice;
 
+import kr.co.devcs.shop.common.dto.ErrorCode;
+import kr.co.devcs.shop.common.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.net.BindException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 @RestControllerAdvice
 public class RestControllerExceptionHandler {
@@ -14,22 +19,29 @@ public class RestControllerExceptionHandler {
         System.out.println("########## RestControllerExceptionHandler Default Constructor Call...");
     }
 
-//    @ExceptionHandler(BindException.class)
-//    public ResponseEntity<String> handleBindException(BindException ex) {
-//        // BindingResult에 있는 오류를 처리하는 로직을 여기에 작성합니다.
-//        StringBuilder errorMessage = new StringBuilder("Validation errors:\n");
-//        for (FieldError error : ex.getFieldErrors()) {
-//            errorMessage.append(error.getField())
-//                    .append(": ")
-//                    .append(error.getDefaultMessage())
-//                    .append("\n");
-//        }
-//        return ResponseEntity.badRequest().body(errorMessage.toString());
-//    }
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> httpMessageNotReadableExceptionHandler(HttpMessageNotReadableException exception) {
+        ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", "JSON이 전달되지 않았습니다.");
+        final ErrorResponse response = new ErrorResponse(errorCode.getDescription(), errorCode.getStatus(), errors);
+        return ResponseEntity.badRequest().body(response);
+    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception) {
+        ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
+        Map<String, String> errors = new HashMap<>();
+        Stream.of(exception.getBindingResult().getFieldError()).forEach(fieldError ->
+            errors.put(fieldError.getField(), fieldError.getDefaultMessage())
+        );
+        final ErrorResponse response = new ErrorResponse(errorCode.getDescription(), errorCode.getStatus(), errors);
+        return ResponseEntity.badRequest().body(response);
+    }
+
     @ExceptionHandler(Exception.class)
-        public ResponseEntity<String> handleException(Exception ex) {
-            System.out.println(ex.getClass());
-            System.out.println(ex.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
-        }
+    public ResponseEntity<String> handleException(Exception ex) {
+        System.out.println(ex.getClass());
+        System.out.println(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+    }
 }
