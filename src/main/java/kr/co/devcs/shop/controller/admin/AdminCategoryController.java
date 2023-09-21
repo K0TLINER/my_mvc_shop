@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/admin/category")
 @RequiredArgsConstructor
@@ -28,5 +30,13 @@ public class AdminCategoryController {
     ) {
         Category category = categoryService.getCategory(categoryId).orElseThrow();
         return ResponseEntity.ok().body(category);
+    }
+
+    @RequestMapping(value = "/getList", method = RequestMethod.GET)
+    public ResponseEntity<?> getCategoryList(
+            @RequestParam(value = "parentCategoryId", required = false) Long parentCategoryId
+    ) {
+        List<Category> categories = categoryService.getCategoryListByParentCategoryId(parentCategoryId);
+        return ResponseEntity.ok().body(categories);
     }
 }
