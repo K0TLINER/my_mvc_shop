@@ -28,15 +28,19 @@ public class Product extends BaseTime {
     @Column(name = "manufacture_date")
     private LocalDate manufactureDate;
     @Column(name = "price", nullable = false)
-    @ColumnDefault("0")
     private Long price;
     @Column(name = "stock", nullable = false)
-    @ColumnDefault("0")
     private Long stock;
     @Column(name = "view_count", nullable = false)
-    @ColumnDefault("0")
     private Long viewCount;
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    @PrePersist
+    public void prePersist() {
+        viewCount = (viewCount != null) ? viewCount : 0;
+        stock = (stock != null) ? stock : 0;
+        price = (price != null) ? price : 0;
+    }
 }

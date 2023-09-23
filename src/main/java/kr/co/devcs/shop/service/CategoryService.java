@@ -9,11 +9,11 @@ import java.util.Optional;
 
 @Transactional
 public interface CategoryService {
-    void addCategory(CategoryForm categoryForm);
+    Category addCategory(CategoryForm categoryForm);
     Optional<Category> getCategory(long categoryId);
     List<Category> getCategoryListByParentCategoryId();
     List<Category> getCategoryListByParentCategoryId(Long parentCategoryId);
-    void updateCategory(CategoryForm categoryForm);
+    Category updateCategory(CategoryForm categoryForm);
     void deleteCategory(long categoryId);
     boolean existsByCategoryId(long categoryId);
 }

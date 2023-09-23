@@ -13,6 +13,6 @@ public interface ProductService {
     void addProduct(ProductForm productForm);
     Optional<Product> getProduct(long productId);
     List<Product> getProductList(SearchForm searchForm);
-    void updateProduct(long productId, ProductForm productForm);
+    Product updateProduct(ProductForm productForm);
     void deleteProduct(long productId);
 }

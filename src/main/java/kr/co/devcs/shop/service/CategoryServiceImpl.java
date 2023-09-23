@@ -4,6 +4,7 @@ import kr.co.devcs.shop.dto.CategoryForm;
 import kr.co.devcs.shop.entity.Category;
 import kr.co.devcs.shop.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,12 +15,12 @@ import java.util.Optional;
 public class CategoryServiceImpl implements CategoryService{
     private final CategoryRepository categoryRepository;
     @Override
-    public void addCategory(CategoryForm categoryForm) {
+    public Category addCategory(CategoryForm categoryForm) {
         Category category = Category.builder()
                 .categoryName(categoryForm.getCategoryName())
                 .parentCategory(categoryForm.getParentCategoryId() != null ? this.getCategory(categoryForm.getParentCategoryId()).orElseThrow() : null)
                 .build();
-        categoryRepository.save(category);
+        return categoryRepository.save(category);
     }
 
     @Override
@@ -29,21 +30,21 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public List<Category> getCategoryListByParentCategoryId() {
-        return categoryRepository.findAllByParentCategoryCategoryId(null);
+        return categoryRepository.findAllByParentCategoryCategoryId(null, Sort.by("categoryName").ascending());
     }
 
     @Override
     public List<Category> getCategoryListByParentCategoryId(Long parentCategoryId) {
         if(parentCategoryId != null)
-            return categoryRepository.findAllByParentCategoryCategoryId(parentCategoryId);
+            return categoryRepository.findAllByParentCategoryCategoryId(parentCategoryId, Sort.by("categoryName").ascending());
         return this.getCategoryListByParentCategoryId();
     }
 
     @Override
-    public void updateCategory(CategoryForm categoryForm) {
-        Category category = Category.builder()
-                .categoryName(categoryForm.getCategoryName()).build();
-        categoryRepository.save(category);
+    public Category updateCategory(CategoryForm categoryForm) {
+        Category category = this.getCategory(categoryForm.getCategoryId()).orElseThrow();
+        category.setCategoryName(categoryForm.getCategoryName());
+        return categoryRepository.save(category);
     }
 
     @Override
