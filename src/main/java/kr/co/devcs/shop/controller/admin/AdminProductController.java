@@ -5,20 +5,16 @@ import kr.co.devcs.shop.dto.SearchForm;
 import kr.co.devcs.shop.entity.Product;
 import kr.co.devcs.shop.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.awt.print.Pageable;
-import java.security.InvalidParameterException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/admin/product")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class AdminProductController {
     private final ProductService productService;
