@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/category")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class AdminCategoryController {
     private final CategoryService categoryService;

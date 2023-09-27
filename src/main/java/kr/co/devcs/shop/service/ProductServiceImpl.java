@@ -5,7 +5,13 @@ import kr.co.devcs.shop.dto.SearchForm;
 import kr.co.devcs.shop.entity.Category;
 import kr.co.devcs.shop.entity.Product;
 import kr.co.devcs.shop.repository.ProductRepository;
+import kr.co.devcs.shop.specifications.ProductSpecifications;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +22,7 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
+    @Value("${product.page-size}") private int pageSize;
     @Override
     public void addProduct(ProductForm productForm) {
         Category category = categoryService.getCategory(productForm.getCategoryId()).orElseThrow();
@@ -35,7 +42,20 @@ public class ProductServiceImpl implements ProductService {
     }
     @Override
     public List<Product> getProductList(SearchForm searchForm) {
-        return productRepository.findAll();
+        Sort.Order firstSort = new Sort.Order(
+                searchForm.getSortType().equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC,
+                searchForm.getSortData()
+        );
+        Sort.Order secondSort = new Sort.Order(
+                Sort.Direction.DESC,
+                "registrationDate"
+        );
+        Sort sort = Sort.by(firstSort, secondSort);
+
+        Pageable pageable = PageRequest.of(searchForm.getCurrentPage(), pageSize, sort);
+        Page<Product> result = productRepository.findAll(ProductSpecifications.filterBySearchForm(searchForm), pageable);
+
+        return result.getContent();
     }
     @Override
     public Product updateProduct(ProductForm productForm) {

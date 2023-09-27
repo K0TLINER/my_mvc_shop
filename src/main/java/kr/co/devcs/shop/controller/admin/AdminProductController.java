@@ -34,9 +34,9 @@ public class AdminProductController {
     }
     @RequestMapping(value = "/getList", method = RequestMethod.GET)
     public ResponseEntity<?> getProductList(
-
+        @ModelAttribute SearchForm searchForm
     ) {
-        List<Product> products = productService.getProductList(new SearchForm(10));
+        List<Product> products = productService.getProductList(searchForm);
         return ResponseEntity.ok().body(products);
     }
     @RequestMapping(value = "/update", method = RequestMethod.PATCH)

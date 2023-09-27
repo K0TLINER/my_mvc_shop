@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 
 @Data
 public class SearchForm {
-    private int page = 0;
-    @Value("${product.page-size}")
-    private final int size;
+    private int currentPage = 0;
     private String keyword;
+    private Long categoryId;
+    private Long minPrice;
+    private Long maxPrice;
+    private String sortData = "registrationDate";
+    private String sortType = "desc";
 }
