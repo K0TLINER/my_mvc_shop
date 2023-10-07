@@ -1,6 +1,9 @@
 package kr.co.devcs.shop.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +14,9 @@ import java.util.UUID;
 
 @Entity(name = "orders")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order extends BaseTime {
     @Id
     @Column(name = "order_id")
