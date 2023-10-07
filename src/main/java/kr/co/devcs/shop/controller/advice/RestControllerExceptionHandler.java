@@ -20,6 +20,15 @@ public class RestControllerExceptionHandler {
         System.out.println("########## RestControllerExceptionHandler Default Constructor Call...");
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> httpIllegalArgumentExceptionHandler(IllegalArgumentException exception) {
+        ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
+        final ErrorResponse response = new ErrorResponse(errorCode.getDescription(), errorCode.getStatus(), errors);
+        return ResponseEntity.badRequest().body(response);
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> httpMessageNotReadableExceptionHandler(HttpMessageNotReadableException exception) {
         ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
