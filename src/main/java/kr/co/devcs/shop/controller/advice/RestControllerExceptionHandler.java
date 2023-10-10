@@ -5,6 +5,7 @@ import kr.co.devcs.shop.common.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -56,9 +57,13 @@ public class RestControllerExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception ex) {
+    public ResponseEntity<ErrorResponse> handleException(Exception ex) {
         System.out.println(ex.getClass());
         System.out.println(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+        ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", ex.getMessage() != null ? ex.getMessage() : "Internal Server Error");
+        final ErrorResponse response = new ErrorResponse(errorCode.getDescription(), errorCode.getStatus(), errors);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }
