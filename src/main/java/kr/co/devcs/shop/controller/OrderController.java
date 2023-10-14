@@ -13,6 +13,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "/order")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class OrderController {
     private final OrderService orderService;
     private final ProductService productService;
@@ -29,11 +31,11 @@ public class OrderController {
     public ResponseEntity<?> add(
             @CurrentMember Member currentMember,
             @RequestBody OrderForm orderForm
-    ) {
+    ) throws IOException {
         Product product = productService.getProduct(orderForm.getProductId()).orElseThrow();
         Order order = orderForm.toEntity(currentMember, product);
-        orderService.addOrder(order).orElseThrow();
-        return ResponseEntity.ok().build();
+        Order newOrder = orderService.addOrder(order).orElseThrow();
+        return ResponseEntity.ok().body(Map.of("orderId", newOrder.getOrderId()));
     }
     @RequestMapping(value = "/update", method = RequestMethod.PATCH)
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
@@ -77,7 +79,7 @@ public class OrderController {
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<?> getList(
             @CurrentMember Member currentMember,
-            @RequestBody OrderSearchForm orderSearchForm
+            @ModelAttribute OrderSearchForm orderSearchForm
     ) {
         orderSearchForm.setBuyer(currentMember);
         if(currentMember.getRole().equals(Role.ROLE_ADMIN))
@@ -94,7 +96,6 @@ public class OrderController {
             @RequestBody Map map,
             @PathVariable("orderStatus") char orderStatus
     ) {
-
         UUID orderId = UUID.fromString((String) map.get("orderId"));
         orderService.updateOrderByOrderStatus(orderId, orderStatus, currentMember);
         return ResponseEntity.ok().build();

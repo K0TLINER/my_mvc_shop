@@ -15,5 +15,6 @@ public interface ProductService {
     Optional<Product> getProduct(long productId);
     List<Product> getProductList(SearchForm searchForm);
     Product updateProduct(ProductForm productForm);
+    Product updateProduct(Product product);
     void deleteProduct(long productId);
 }

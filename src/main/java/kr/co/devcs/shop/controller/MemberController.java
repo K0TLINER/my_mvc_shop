@@ -18,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class MemberController {
     private final MemberService memberService;
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -69,6 +70,13 @@ public class MemberController {
         boolean value = memberService.existByEmail(email);
         return ResponseEntity.ok().body(Map.of("value", value));
     }
+    @RequestMapping(value = "/checkToken", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> checkToken(
+    ) {
+        return ResponseEntity.ok().build();
+    }
+
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> test() {

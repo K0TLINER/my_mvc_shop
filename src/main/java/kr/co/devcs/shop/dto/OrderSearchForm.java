@@ -6,4 +6,5 @@ import lombok.Data;
 @Data
 public class OrderSearchForm extends PageForm{
     private Member buyer;
+    private int currentPage = 0;
 }

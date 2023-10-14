@@ -67,8 +67,14 @@ public class ProductServiceImpl implements ProductService {
         product.setManufactureDate(productForm.getManufactureDate());
         product.setCategory(categoryService.getCategory(productForm.getCategoryId()).orElseThrow());
 
+        return this.updateProduct(product);
+    }
+
+    @Override
+    public Product updateProduct(Product product) {
         return productRepository.save(product);
     }
+
     @Override
     public void deleteProduct(long productId) {
         Product product = this.getProduct(productId).orElseThrow();

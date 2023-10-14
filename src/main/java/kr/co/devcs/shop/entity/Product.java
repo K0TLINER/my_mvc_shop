@@ -34,6 +34,7 @@ public class Product extends BaseTime {
     @Column(name = "view_count", nullable = false)
     private Long viewCount;
     @ManyToOne
+            (fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 

@@ -25,7 +25,12 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        String token = authorization.substring("Bearer ".length());
+        String token;
+        if(authorization.length() > "Bearer ".length()) {
+            token = authorization.substring("Bearer ".length());
+        } else {
+            token = null;
+        }
         if(token == null || token.trim().equals("")) {
             filterChain.doFilter(request, response);
             return;
