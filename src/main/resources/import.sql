@@ -63,12 +63,12 @@ insert into products(modified_date, registration_date, category_id, manufacture_
 
 
 -- Members
-insert into members(modified_date, registration_date, birth_date, email, nickname, password, phone, role, social_flag, active, member_id) values(null, NOW() - 100, '1999-08-24', 'admin@naver.com', 'admin', 'admin', '010-5555-0302', 1, false, true, 0x0FCCD174645B4C3089F4E554712D6D7D);
-insert into members(modified_date, registration_date, birth_date, email, nickname, password, phone, role, social_flag, active, member_id) values(null, NOW() - 4, '2002-03-12', 'test@naver.com', 'test', 'test', '010-1155-0302', 0, false, true, 0xB51DB8A571AB41518E81CE31BCEBA501);
+insert into members(modified_date, registration_date, birth_date, email, nickname, password, phone, role, social_flag, active, member_id) values(null, DATE_ADD(CURRENT_DATE(), INTERVAL -FLOOR(RAND() * 365) DAY), '1999-08-24', 'admin@naver.com', 'admin', 'admin', '010-5555-0302', 1, false, true, 0x0FCCD174645B4C3089F4E554712D6D7D);
+insert into members(modified_date, registration_date, birth_date, email, nickname, password, phone, role, social_flag, active, member_id) values(null, DATE_ADD(CURRENT_DATE(), INTERVAL -FLOOR(RAND() * 365) DAY), '2002-03-12', 'test@naver.com', 'test', 'test', '010-1155-0302', 0, false, true, 0xB51DB8A571AB41518E81CE31BCEBA501);
 
 -- Orders
-insert into orders(modified_date, registration_date, buyer_id, delivery_address, delivery_address_detail, delivery_date, is_deleted, order_status, product_id, quantity, recipient_name, recipient_phone, order_id) values(null, NOW(), 0xB51DB8A571AB41518E81CE31BCEBA501, '서울', '강남구', null, 0x00, 0x00, 1, 10, '김태현', '010-4444-2222', 0x72B749DA3BD9403580D37ECCCE104D60);
-insert into orders(modified_date, registration_date, buyer_id, delivery_address, delivery_address_detail, delivery_date, is_deleted, order_status, product_id, quantity, recipient_name, recipient_phone, order_id) values(null, NOW(), 0xB51DB8A571AB41518E81CE31BCEBA501, '울산 동구', '방어진', null, 0x00, 0x00, 1, 40, '김태현', '010-1114-2442', 0xe014e03e0d4e47338938d5e8c2917039);
+insert into orders(modified_date, registration_date, buyer_id, delivery_address, delivery_address_detail, delivery_date, is_deleted, order_status, product_id, quantity, recipient_name, recipient_phone, order_id) values(null, DATE_ADD(CURRENT_DATE(), INTERVAL -FLOOR(RAND() * 365) DAY), 0xB51DB8A571AB41518E81CE31BCEBA501, '서울', '강남구', null, 0x00, 0x00, 1, 10, '김태현', '010-4444-2222', 0x72B749DA3BD9403580D37ECCCE104D60);
+insert into orders(modified_date, registration_date, buyer_id, delivery_address, delivery_address_detail, delivery_date, is_deleted, order_status, product_id, quantity, recipient_name, recipient_phone, order_id) values(null, DATE_ADD(CURRENT_DATE(), INTERVAL -FLOOR(RAND() * 365) DAY), 0xB51DB8A571AB41518E81CE31BCEBA501, '울산 동구', '방어진', null, 0x00, 0x00, 1, 40, '김태현', '010-1114-2442', 0xe014e03e0d4e47338938d5e8c2917039);
 
 -- delivery_info
 insert into delivery_info(info_id, modified_date, registration_date, delivery_address, delivery_address_detail, recipient_name, recipient_phone, member_id) values(0xefe72099fd144aaea82233cc8db94b02, null, DATE_ADD(CURRENT_DATE(), INTERVAL -FLOOR(RAND() * 365) DAY), '서울 서대문구 통일로 81 (NH농협생명빌딩)', '5층', '김태태', '010-1111-2340', 0xB51DB8A571AB41518E81CE31BCEBA501);
