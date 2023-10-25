@@ -5,6 +5,7 @@ import kr.co.devcs.shop.dto.MemberForm;
 import kr.co.devcs.shop.entity.Member;
 import kr.co.devcs.shop.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
@@ -73,8 +74,9 @@ public class MemberController {
     @RequestMapping(value = "/checkToken", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> checkToken(
+            @CurrentMember Member currentMember
     ) {
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(currentMember);
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
