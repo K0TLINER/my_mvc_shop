@@ -20,6 +20,8 @@ target/
 *.ipr
 .DS_Store
 application-mysql.properties
+application-redis.properties
+application-sendgrid.properties
 
 ### NetBeans ###
 /nbproject/private/

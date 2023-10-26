@@ -32,6 +32,10 @@ public class SecurityConfig {
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
+        http
+                .requiresChannel(channel -> channel.anyRequest().requiresSecure())
+                .authorizeRequests(authorize -> authorize.anyRequest().permitAll());
+
         http.formLogin().disable();
 //        http.authorizeRequests().antMatchers("/member/test").hasAuthority("ROLE_ADMIN")
 //                .anyRequest().

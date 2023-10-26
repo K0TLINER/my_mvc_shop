@@ -8,12 +8,14 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import kr.co.devcs.shop.entity.Order;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
 @Service
 public class EmailServiceImpl implements EmailService {
+    @Value("${SENDGRID_SECRET_KEY}") private String SENDGRID_SECRET_KEY;
     @Override
     public void sendOrderEmail(Order order) throws IOException {
 
@@ -37,7 +39,7 @@ public class EmailServiceImpl implements EmailService {
         Content content = new Content("text/plain", "주문 번호: " + order.getOrderId() + "\n상품명 : " + order.getProduct().getProductName());
         Mail mail = new Mail(from, subject, to ,content);
 
-        SendGrid sg = new SendGrid("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");
+        SendGrid sg = new SendGrid(SENDGRID_SECRET_KEY);
         Request request = new Request();
         try {
             request.setMethod(Method.POST);
